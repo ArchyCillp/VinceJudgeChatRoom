@@ -27,10 +27,12 @@ def send_to_server(server_socket):
             msg = input()
             if msg == '$exit':
                 server_socket.sendall(msg.encode())
+                server_socket.close()
+                exit()
         except Exception as e:
             print(e)
         try:
-            server_socket.send(msg.encode())
+            server_socket.sendall(msg.encode())
         except Exception as e:
             print(e)
 

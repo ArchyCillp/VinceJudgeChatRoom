@@ -2,7 +2,7 @@ import socket
 import select
 import sys
 
-hostname = '127.0.0.5'
+hostname = socket.gethostbyname(socket.gethostname())
 port = 9995
 addr = (hostname, port)
 online_socket_list = []
@@ -42,6 +42,9 @@ def run_a_new_server():
                 disconnected = False
                 try:
                     msg = active_socket.recv(1024).decode('utf-8')
+                    if msg == "$exit":
+                        msg = '{0} leave the room'.format(user_name_by_socket[active_socket])
+                        disconnected = True
                     msg = '{0}: {1}'.format(user_name_by_socket[active_socket], msg)
                 except socket.error:
                     msg = '{0} leave the room'.format(user_name_by_socket[active_socket])
